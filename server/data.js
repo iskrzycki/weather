@@ -16,7 +16,9 @@ const DataSchema = new Schema(
     pressure: Number,
     absolutePressure: {
       type: Number,
-      default: () => calculateAbsolutePressure(this.pressure),
+      default: function () {
+        return calculateAbsolutePressure(this.pressure);
+      },
     },
   },
   { timestamps: true, collection: "measurements" }
