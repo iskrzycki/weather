@@ -34,6 +34,30 @@ router.get("/getLast", (req, res) => {
   });
 });
 
+router.get("/getLastXDays/:x", (req, res) => {
+  const numOfDays = req.params.x ? req.params.x : 1;
+  const start = new Date(
+    new Date().getTime() - numOfDays * 24 * 60 * 60 * 1000
+  );
+
+  Measurements.find(
+    { createdAt: { $gte: start } },
+    { absolutePressure: 1, temp2: 1, hum2: 1, createdAt: 1, _id: 0 }
+  )
+    .then((data) =>
+      res.json({
+        success: true,
+        data: data.map((item) => ({
+          press: item.absolutePressure,
+          temp: item.temp2,
+          hum: item.hum2,
+          time: item.createdAt,
+        })),
+      })
+    )
+    .catch((err) => res.json({ success: false, error: err }));
+});
+
 router.post("/create", (req, res) => {
   Measurements.create(req.body, (error, data) => {
     if (error) {
