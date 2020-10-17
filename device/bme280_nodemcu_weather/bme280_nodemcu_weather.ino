@@ -73,5 +73,5 @@ void loop()
     Serial.println("Error in WiFi connection");
   }
 
-  delay(60000); // Send a request every 60 seconds
+  delay(900000); // Send a request every 15 minutes
 }
