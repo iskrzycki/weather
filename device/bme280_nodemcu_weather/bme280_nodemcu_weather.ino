@@ -5,11 +5,17 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
+#include "DHT.h"
+#define DHTTYPE DHT22
+
+uint8_t DHTPin = D6;
+DHT dht(DHTPin, DHTTYPE);
 
 Adafruit_BME280 bme;
 HTTPClient http;
 
 float temperature, humidity, pressure, altitude;
+float DHT_temperature, DHT_humidity;
 
 void setup()
 {
@@ -28,6 +34,11 @@ void setup()
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
+  // DHT config
+  pinMode(DHTPin, INPUT);
+
+  dht.begin();
+
   // BME CONFIG
   bme.begin(0x76);
   bme.setSampling(Adafruit_BME280::MODE_FORCED,
@@ -41,7 +52,6 @@ void loop()
 {
   if (WiFi.status() == WL_CONNECTED)
   {
-
     http.begin("http://path.to.api/method");
     http.addHeader("Content-Type", "application/json");
 
@@ -51,7 +61,10 @@ void loop()
     humidity = bme.readHumidity();
     pressure = bme.readPressure() / 100.0F;
 
-    int httpResponseCode = http.POST("{\"temperature\":\"" + String(temperature) + "\",\"pressure\":\"" + String(pressure) + "\",\"humidity\":\"" + String(humidity) + "\"}");
+    DHT_temperature = dht.readTemperature();
+    DHT_humidity = dht.readHumidity();
+
+    int httpResponseCode = http.POST("{\"temp1\":\"" + String(temperature) + "\",\"pressure\":\"" + String(pressure) + "\",\"hum1\":\"" + String(humidity) + "\",\"temp2\":\"" + String(DHT_temperature) + "\",\"hum2\":\"" + String(DHT_humidity) + "\"}");
 
     http.end();
   }
