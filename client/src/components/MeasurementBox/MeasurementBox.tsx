@@ -3,7 +3,7 @@ import "./MeasurementBox.css";
 
 interface MeasurementBoxProps {
   title: string;
-  value: string;
+  value: string | Number;
 }
 
 const MeasurementBox = (props: MeasurementBoxProps) => (
