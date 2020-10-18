@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import "./Chart.css";
 
 am4core.useTheme(am4themes_animated);
+am4core.options.autoDispose = true;
 
 interface ChartProps {
   data: any[];
@@ -29,36 +30,44 @@ export const seriesBuilder = (
 
 const Chart = (props: ChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
+  const [chart, setChart] = useState<am4charts.XYChart>();
 
   useEffect(() => {
-    let chart = am4core.create(
+    const newChart = am4core.create(
       chartRef.current as HTMLElement,
       am4charts.XYChart
     );
+    setChart(chart);
 
-    let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    let dateAxis = newChart.xAxes.push(new am4charts.DateAxis());
     dateAxis.tooltipDateFormat = "dd-MM-yyyy HH:mm";
 
-    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    let valueAxis = newChart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.cursorTooltipEnabled = false;
 
     if (Array.isArray(props.series)) {
       props.series.forEach((serie) => {
-        chart.series.push(serie);
+        newChart.series.push(serie);
       });
     } else {
-      chart.series.push(props.series);
+      newChart.series.push(props.series);
     }
 
-    chart.cursor = new am4charts.XYCursor();
-    chart.cursor.lineY.disabled = true;
+    newChart.cursor = new am4charts.XYCursor();
+    newChart.cursor.lineY.disabled = true;
 
-    chart.dateFormatter.inputDateFormat = "i"; // ISO 8061
-    chart.dateFormatter.dateFormat = "yyyy-MM-dd";
-    chart.legend = new am4charts.Legend();
+    newChart.dateFormatter.inputDateFormat = "i"; // ISO 8061
+    newChart.dateFormatter.dateFormat = "yyyy-MM-dd";
+    newChart.legend = new am4charts.Legend();
 
-    chart.data = props.data;
+    setChart(newChart);
   }, []);
+
+  useEffect(() => {
+    if (chart) {
+      chart.data = props.data;
+    }
+  }, [chart, props.data]);
 
   return (
     <div
