@@ -1,4 +1,4 @@
-import { CircularProgress, Container, Grid, Paper } from "@material-ui/core";
+import { Container, Grid, Paper } from "@material-ui/core";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
 import Chart, { seriesBuilder } from "./components/Chart/Chart";
@@ -45,28 +45,59 @@ const App = () => {
     requestData.data.length > 0
       ? requestData.data[requestData.data.length - 1]
       : undefined;
-  const isDataReady = requestData.data.length > 0 && !requestData.loading;
+
+  // TODO move devPoint to separate service.
+  const dewPoint = (hum: number, temp: number) =>
+    Math.pow(hum / 100, 1 / 8) * (112 + 0.9 * temp) + 0.1 * temp - 112;
 
   return (
     <div className="App">
       <>
         <header className="App-header">
-          {isDataReady ? (
-            <div style={{ display: "flex" }}>
-              <MeasurementBox title="Temperature" value={last!.temp} />
-              <MeasurementBox title="Pressure" value={last!.press} />
-              <MeasurementBox title="Humidity" value={last!.hum} />
-            </div>
-          ) : (
-            <CircularProgress />
-          )}
+          WEATHER STATION
+          <br />
+          ŁÓDŹ, POLAND
         </header>
+
+        <Container maxWidth={"md"} style={{ marginTop: "20px" }}>
+          <Grid container spacing={3} justify="space-between">
+            <Grid item sm={4} xs={12}>
+              <MeasurementBox
+                title="Temperature"
+                value={last ? last.temp : undefined}
+                valueMax={"-"}
+                valueMin={"-"}
+                unit="°C"
+              />
+            </Grid>
+            <Grid item sm={4} xs={12}>
+              <MeasurementBox
+                title="Pressure"
+                value={last ? last.press : undefined}
+                valueMax={"-"}
+                valueMin={"-"}
+                unit="hPa"
+              />
+            </Grid>
+            <Grid item sm={4} xs={12}>
+              <MeasurementBox
+                title="Humidity"
+                value={last ? last.hum : undefined}
+                valueMax={"-"}
+                valueMin={"-"}
+                unit="%"
+              />
+            </Grid>
+          </Grid>
+        </Container>
+
         <Container maxWidth={false} style={{ marginTop: "20px" }}>
           <ToggleButtonGroup
             value={period}
             exclusive
             onChange={(e, val) => setPeriod(val)}
             aria-label="period"
+            style={{ marginBottom: "20px" }}
           >
             <ToggleButton value={1} aria-label="1 day" disabled={period === 1}>
               24h
@@ -89,6 +120,7 @@ const App = () => {
               max
             </ToggleButton>
           </ToggleButtonGroup>
+
           <Grid container spacing={2}>
             <Grid item lg={4} xs={12}>
               <Paper>
