@@ -29,4 +29,4 @@ jobs:
         ftp-server: ${{ secrets.FTP_ADDRESS }}
         ftp-username: ${{ secrets.FTP_USER }}
         ftp-password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: build # This folder is NOT going to upload by default unless you add it to .git-ftp-include
+        local-dir: client/build # This folder is NOT going to upload by default unless you add it to .git-ftp-include
