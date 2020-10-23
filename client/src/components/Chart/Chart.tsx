@@ -37,7 +37,7 @@ const Chart = (props: ChartProps) => {
       chartRef.current as HTMLElement,
       am4charts.XYChart
     );
-    setChart(chart);
+    setChart(newChart);
 
     let dateAxis = newChart.xAxes.push(new am4charts.DateAxis());
     dateAxis.tooltipDateFormat = "dd-MM-yyyy HH:mm";
@@ -61,7 +61,7 @@ const Chart = (props: ChartProps) => {
     newChart.legend = new am4charts.Legend();
 
     setChart(newChart);
-  }, []);
+  }, [props.series]);
 
   useEffect(() => {
     if (chart) {

@@ -5,14 +5,11 @@ import Chart, { seriesBuilder } from "./components/Chart/Chart";
 import MeasurementBox from "./components/MeasurementBox/MeasurementBox";
 import "./App.css";
 
-interface WeatherRequestData {
-  data: {
-    hum: Number;
-    press: Number;
-    temp: Number;
-    time: string;
-  }[];
-  loading: boolean;
+interface WeatherData {
+  hum: Number;
+  press: Number;
+  temp: Number;
+  time: string;
 }
 
 const chartSeries = [
@@ -22,33 +19,27 @@ const chartSeries = [
 ];
 
 const App = () => {
-  const [requestData, setRequestData] = useState<WeatherRequestData>({
-    data: [],
-    loading: true,
-  });
+  const [requestData, setRequestData] = useState<WeatherData[]>([]);
   const [period, setPeriod] = useState<Number>(1);
 
   useEffect(() => {
-    setRequestData({ data: [], loading: true });
+    setRequestData([]);
     fetch(`http://weather.iskrzycki.usermd.net/api/getLastXDays/${period}`)
       .then((response) => response.json())
       .then((data) => {
-        setRequestData({ data: data.data, loading: false });
+        setRequestData(data.data);
       })
       .catch((error) => {
         console.error(error);
-        setRequestData({ ...requestData, loading: false });
       });
   }, [period]);
 
   const last =
-    requestData.data.length > 0
-      ? requestData.data[requestData.data.length - 1]
-      : undefined;
+    requestData.length > 0 ? requestData[requestData.length - 1] : undefined;
 
   // TODO move devPoint to separate service.
-  const dewPoint = (hum: number, temp: number) =>
-    Math.pow(hum / 100, 1 / 8) * (112 + 0.9 * temp) + 0.1 * temp - 112;
+  // const dewPoint = (hum: number, temp: number) =>
+  //   Math.pow(hum / 100, 1 / 8) * (112 + 0.9 * temp) + 0.1 * temp - 112;
 
   return (
     <div className="App">
@@ -124,17 +115,17 @@ const App = () => {
           <Grid container spacing={2}>
             <Grid item lg={4} xs={12}>
               <Paper>
-                <Chart data={requestData.data} series={chartSeries[0]} />
+                <Chart data={requestData} series={chartSeries[0]} />
               </Paper>
             </Grid>
             <Grid item lg={4} xs={12}>
               <Paper>
-                <Chart data={requestData.data} series={chartSeries[1]} />
+                <Chart data={requestData} series={chartSeries[1]} />
               </Paper>
             </Grid>
             <Grid item lg={4} xs={12}>
               <Paper>
-                <Chart data={requestData.data} series={chartSeries[2]} />
+                <Chart data={requestData} series={chartSeries[2]} />
               </Paper>
             </Grid>
           </Grid>
