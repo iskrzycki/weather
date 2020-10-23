@@ -16,6 +16,7 @@ jobs:
         
     - name: Build Project
       run: |
+        cd client
         npm install
         npm run build --if-present
         
