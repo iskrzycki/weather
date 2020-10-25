@@ -4,11 +4,12 @@ import React, { useEffect, useState } from "react";
 import Chart, { seriesBuilder } from "./components/Chart/Chart";
 import MeasurementBox from "./components/MeasurementBox/MeasurementBox";
 import "./App.css";
+import { calculate, emptyObj, WeatherData } from "./weatherService";
 
-interface WeatherData {
-  hum: Number;
-  press: Number;
-  temp: Number;
+export interface Measurement {
+  hum: number;
+  press: number;
+  temp: number;
   time: string;
 }
 
@@ -19,27 +20,20 @@ const chartSeries = [
 ];
 
 const App = () => {
-  const [requestData, setRequestData] = useState<WeatherData[]>([]);
+  const [weatherData, setWeatherData] = useState<WeatherData>(emptyObj);
   const [period, setPeriod] = useState<Number>(1);
 
   useEffect(() => {
-    setRequestData([]);
+    setWeatherData(emptyObj);
     fetch(`http://weather.iskrzycki.usermd.net/api/getLastXDays/${period}`)
       .then((response) => response.json())
       .then((data) => {
-        setRequestData(data.data);
+        setWeatherData(calculate(data.data));
       })
       .catch((error) => {
         console.error(error);
       });
   }, [period]);
-
-  const last =
-    requestData.length > 0 ? requestData[requestData.length - 1] : undefined;
-
-  // TODO move devPoint to separate service.
-  // const dewPoint = (hum: number, temp: number) =>
-  //   Math.pow(hum / 100, 1 / 8) * (112 + 0.9 * temp) + 0.1 * temp - 112;
 
   return (
     <div className="App">
@@ -55,27 +49,21 @@ const App = () => {
             <Grid item sm={4} xs={12}>
               <MeasurementBox
                 title="Temperature"
-                value={last ? last.temp : undefined}
-                valueMax={"-"}
-                valueMin={"-"}
+                value={weatherData.temperature}
                 unit="°C"
               />
             </Grid>
             <Grid item sm={4} xs={12}>
               <MeasurementBox
                 title="Pressure"
-                value={last ? last.press : undefined}
-                valueMax={"-"}
-                valueMin={"-"}
+                value={weatherData.pressure}
                 unit="hPa"
               />
             </Grid>
             <Grid item sm={4} xs={12}>
               <MeasurementBox
                 title="Humidity"
-                value={last ? last.hum : undefined}
-                valueMax={"-"}
-                valueMin={"-"}
+                value={weatherData.humidity}
                 unit="%"
               />
             </Grid>
@@ -115,17 +103,26 @@ const App = () => {
           <Grid container spacing={2}>
             <Grid item lg={4} xs={12}>
               <Paper>
-                <Chart data={requestData} series={chartSeries[0]} />
+                <Chart
+                  data={weatherData.measurements}
+                  series={chartSeries[0]}
+                />
               </Paper>
             </Grid>
             <Grid item lg={4} xs={12}>
               <Paper>
-                <Chart data={requestData} series={chartSeries[1]} />
+                <Chart
+                  data={weatherData.measurements}
+                  series={chartSeries[1]}
+                />
               </Paper>
             </Grid>
             <Grid item lg={4} xs={12}>
               <Paper>
-                <Chart data={requestData} series={chartSeries[2]} />
+                <Chart
+                  data={weatherData.measurements}
+                  series={chartSeries[2]}
+                />
               </Paper>
             </Grid>
           </Grid>

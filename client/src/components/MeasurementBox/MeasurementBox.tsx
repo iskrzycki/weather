@@ -9,37 +9,30 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { grey } from "@material-ui/core/colors";
+import { currentData, currentTempData } from "../../weatherService";
+import { format } from "date-fns";
 
 type WeatherDataType = "Temperature" | "Pressure" | "Humidity";
 
 interface MeasurementBoxProps {
   title: WeatherDataType;
-  value?: string | Number;
-  valueMax?: string | Number;
-  valueMin?: string | Number;
+  value?: currentData | currentTempData;
   unit: string;
 }
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // maxWidth: 250,
     textAlign: "left",
   },
   avatar: {
     backgroundColor: grey[300],
   },
   cardContent: {
-    height: 70,
+    height: 80,
   },
 }));
 
-const MeasurementBox = ({
-  title,
-  value,
-  valueMax,
-  valueMin,
-  unit,
-}: MeasurementBoxProps) => {
+const MeasurementBox = ({ title, value, unit }: MeasurementBoxProps) => {
   const classes = useStyles();
 
   return (
@@ -53,20 +46,30 @@ const MeasurementBox = ({
           />
         }
         title={title}
-        subheader="18:20 22.10.2020"
+        subheader={
+          value ? format(new Date(value.time), "yyyy-MM-dd HH:mm") : ""
+        }
       />
       <CardContent className={classes.cardContent}>
         {value ? (
           <>
             <Typography variant="body2" color="textSecondary" component="p">
-              {`Current: ${value} ${unit}`}
+              {`Current: ${value.current} ${unit}`}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {`MAX: ${valueMax} ${unit}`}
+              {`MAX: ${value.max} ${unit}`}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {`MIN: ${valueMin} ${unit}`}
+              {`MIN: ${value.min} ${unit}`}
             </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {`TREND: ${value.trend}`}
+            </Typography>
+            {(value as currentTempData).dewPoint ? (
+              <Typography variant="body2" color="textSecondary" component="p">
+                {`DEW POINT: ${(value as currentTempData).dewPoint} ${unit}`}
+              </Typography>
+            ) : null}
           </>
         ) : (
           <CircularProgress />
