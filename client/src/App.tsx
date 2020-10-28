@@ -5,6 +5,7 @@ import Chart, { seriesBuilder } from "./components/Chart/Chart";
 import MeasurementBox from "./components/MeasurementBox/MeasurementBox";
 import "./App.css";
 import { calculate, emptyObj, WeatherData } from "./weatherService";
+import { getData } from "./api";
 
 export interface Measurement {
   hum: number;
@@ -21,18 +22,13 @@ const chartSeries = [
 
 const App = () => {
   const [weatherData, setWeatherData] = useState<WeatherData>(emptyObj);
-  const [period, setPeriod] = useState<Number>(1);
+  const [period, setPeriod] = useState<number>(1);
 
   useEffect(() => {
     setWeatherData(emptyObj);
-    fetch(`http://weather.iskrzycki.usermd.net/api/getLastXDays/${period}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setWeatherData(calculate(data.data));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    getData(period).then((data) => {
+      setWeatherData(calculate(data));
+    });
   }, [period]);
 
   return (
