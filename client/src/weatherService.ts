@@ -1,6 +1,6 @@
 import { Measurement } from "./App";
 
-type Trend = "UP" | "DOWN";
+export type Trend = "UP" | "DOWN";
 
 export interface currentData {
   current: number;

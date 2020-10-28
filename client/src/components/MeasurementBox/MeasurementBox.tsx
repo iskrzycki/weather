@@ -6,11 +6,13 @@ import {
   CircularProgress,
   makeStyles,
   Typography,
+  Box,
 } from "@material-ui/core";
 import React from "react";
-import { grey } from "@material-ui/core/colors";
+import { grey, red, green } from "@material-ui/core/colors";
 import { currentData, currentTempData } from "../../weatherService";
 import { format } from "date-fns";
+import { Trend } from "../../weatherService";
 
 type WeatherDataType = "Temperature" | "Pressure" | "Humidity";
 
@@ -30,10 +32,47 @@ const useStyles = makeStyles((theme) => ({
   cardContent: {
     height: 80,
   },
+  bold: {
+    fontWeight: "bold",
+  },
+  arrowUp: {
+    color: green[500],
+  },
+  arrowDown: {
+    color: red[500],
+  },
 }));
 
 const MeasurementBox = ({ title, value, unit }: MeasurementBoxProps) => {
   const classes = useStyles();
+
+  const renderTextValuePair = (
+    text: string,
+    value: string,
+    icon?: JSX.Element
+  ): JSX.Element => (
+    <Box>
+      <Typography
+        className={classes.bold}
+        color="textSecondary"
+        component="span"
+      >
+        {`${text}: `}
+      </Typography>
+      <Typography color="textSecondary" component="span">
+        {value} {icon}
+      </Typography>
+    </Box>
+  );
+
+  const getTrendIcon = (trend: Trend): JSX.Element => {
+    switch (trend) {
+      case "UP":
+        return <span className={classes.arrowUp}>&#9650;</span>;
+      case "DOWN":
+        return <span className={classes.arrowDown}>&#9660;</span>;
+    }
+  };
 
   return (
     <Card className={classes.root}>
@@ -53,23 +92,19 @@ const MeasurementBox = ({ title, value, unit }: MeasurementBoxProps) => {
       <CardContent className={classes.cardContent}>
         {value ? (
           <>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {`Current: ${value.current} ${unit}`}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {`MAX: ${value.max} ${unit}`}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {`MIN: ${value.min} ${unit}`}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {`TREND: ${value.trend}`}
-            </Typography>
-            {(value as currentTempData).dewPoint ? (
-              <Typography variant="body2" color="textSecondary" component="p">
-                {`DEW POINT: ${(value as currentTempData).dewPoint} ${unit}`}
-              </Typography>
-            ) : null}
+            {renderTextValuePair(
+              "Current",
+              `${value.current} ${unit}`,
+              getTrendIcon(value.trend)
+            )}
+            {renderTextValuePair("Max", `${value.max} ${unit}`)}
+            {renderTextValuePair("Min", `${value.min} ${unit}`)}
+            {(value as currentTempData).dewPoint
+              ? renderTextValuePair(
+                  "Dew Point",
+                  `${(value as currentTempData).dewPoint} ${unit}`
+                )
+              : null}
           </>
         ) : (
           <CircularProgress />
