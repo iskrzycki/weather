@@ -6,6 +6,7 @@ import MeasurementBox from "./components/MeasurementBox/MeasurementBox";
 import "./App.css";
 import { calculate, emptyObj, WeatherData } from "./weatherService";
 import { getData } from "./api";
+import { useTranslation } from "react-i18next";
 
 export interface Measurement {
   hum: number;
@@ -23,6 +24,7 @@ const chartSeries = [
 const App = () => {
   const [weatherData, setWeatherData] = useState<WeatherData>(emptyObj);
   const [period, setPeriod] = useState<number>(1);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setWeatherData(emptyObj);
@@ -35,9 +37,9 @@ const App = () => {
     <div className="App">
       <>
         <header className="App-header">
-          WEATHER STATION
+          {t("title")}
           <br />
-          ŁÓDŹ, POLAND
+          {t("location")}
         </header>
 
         <Container maxWidth={"md"} style={{ marginTop: "20px" }}>
