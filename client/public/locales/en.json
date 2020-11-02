@@ -1,4 +1,29 @@
 {
   "title": "Weather station",
-  "location": "Łódź, Poland"
+  "location": "Łódź, Poland",
+  "language": {
+    "title": "Language",
+    "pl": "Polish",
+    "en": "English"
+  },
+  "tiles": {
+    "temp": "Temperature",
+    "hum": "Humidity",
+    "press": "Pressure",
+    "current": "Current",
+    "max": "Max",
+    "min": "Min",
+    "dew-point": "Dew point"
+  },
+  "periods": {
+    "24h": "24h",
+    "7days": "7 days",
+    "30days": "30 days",
+    "max": "max"
+  },
+  "charts": {
+    "temp": "Temperature",
+    "hum": "Humidity",
+    "press": "Pressure"
+  }
 }

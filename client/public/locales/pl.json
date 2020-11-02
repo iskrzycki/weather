@@ -1,4 +1,29 @@
 {
   "title": "Stacja pogodowa",
-  "location": "Łódź, Polska"
+  "location": "Łódź, Polska",
+  "language": {
+    "title": "Język",
+    "pl": "Polski",
+    "en": "Angielski"
+  },
+  "tiles": {
+    "temp": "Temperatura",
+    "hum": "Wilgotność",
+    "press": "Ciśnienie",
+    "current": "Aktualnie",
+    "max": "Max",
+    "min": "Min",
+    "dew-point": "Punkt rosy"
+  },
+  "periods": {
+    "24h": "24h",
+    "7days": "7 dni",
+    "30days": "30 dni",
+    "max": "max"
+  },
+  "charts": {
+    "temp": "Temperatura",
+    "hum": "Wilgotność",
+    "press": "Ciśnienie"
+  }
 }

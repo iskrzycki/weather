@@ -13,6 +13,7 @@ import { grey, red, green } from "@material-ui/core/colors";
 import { currentData, currentTempData } from "../../weatherService";
 import { format } from "date-fns";
 import { Trend } from "../../weatherService";
+import { useTranslation } from "react-i18next";
 
 type WeatherDataType = "Temperature" | "Pressure" | "Humidity";
 
@@ -20,6 +21,7 @@ interface MeasurementBoxProps {
   title: WeatherDataType;
   value?: currentData | currentTempData;
   unit: string;
+  icon: string;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -43,8 +45,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MeasurementBox = ({ title, value, unit }: MeasurementBoxProps) => {
+const MeasurementBox = ({ title, value, unit, icon }: MeasurementBoxProps) => {
   const classes = useStyles();
+  const { t } = useTranslation();
 
   const renderTextValuePair = (
     text: string,
@@ -81,7 +84,7 @@ const MeasurementBox = ({ title, value, unit }: MeasurementBoxProps) => {
           <Avatar
             aria-label="recipe"
             className={classes.avatar}
-            src={`/icons/${title.toLowerCase()}.png`}
+            src={`/icons/${icon}.png`}
           />
         }
         title={title}
@@ -93,15 +96,15 @@ const MeasurementBox = ({ title, value, unit }: MeasurementBoxProps) => {
         {value ? (
           <>
             {renderTextValuePair(
-              "Current",
+              t("tiles.current"),
               `${value.current} ${unit}`,
               getTrendIcon(value.trend)
             )}
-            {renderTextValuePair("Max", `${value.max} ${unit}`)}
-            {renderTextValuePair("Min", `${value.min} ${unit}`)}
+            {renderTextValuePair(t("tiles.max"), `${value.max} ${unit}`)}
+            {renderTextValuePair(t("tiles.min"), `${value.min} ${unit}`)}
             {(value as currentTempData).dewPoint
               ? renderTextValuePair(
-                  "Dew Point",
+                  t("tiles.dew-point"),
                   `${(value as currentTempData).dewPoint} ${unit}`
                 )
               : null}
