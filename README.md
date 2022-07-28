@@ -28,7 +28,7 @@ Used libraries:
 Weather station is running on NodeMCU which is a esp-based microcontroller with .... (TODO provide params).
 Currently it's powered by usb charger. I will consider powering it by 18650 baterries or powerbank in the future.
 
-TODO photo
+![Weather station device](device.jpg "Weather station device")
 
 Sensors:
 
