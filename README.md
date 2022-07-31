@@ -15,7 +15,7 @@ Used libraries:
 
 ## Server
 
-This is a simple REST backend which is storing new measurements received from weather station and provides results to the client app.
+This is a simple REST backend which is storing new measurements received from the weather station and provides results to the client app.
 
 Used libraries:
 
@@ -25,23 +25,23 @@ Used libraries:
 
 ## Device - heart of the system!
 
-Weather station is running on [NodeMCU](https://en.wikipedia.org/wiki/NodeMCU) microcontroller. Currently it's powered by usb charger. I will consider powering it by 18650 baterries or powerbank in the future.
+Weather station is running on [NodeMCU](https://en.wikipedia.org/wiki/NodeMCU) microcontroller. Currently, it's powered by a USB charger. I will consider powering it with 18650 batteries or a power bank in the future. Of course, the board will be soldered soon to get rid of these wires.
 
 ![Weather station device](device.jpg "Weather station device")
 
 Sensors:
 
-- BME 280 pressure, temperature and humidity sensor
-- DHT22 temperature and humidity sensor
+- BME 280 - pressure, temperature and humidity sensor
+- DHT22 - temperature and humidity sensor
 
 ## Demo
 
-Open [http://weather.iskrzycki.usermd.net](http://weather.iskrzycki.usermd.net) to view live front-end part.
+Just go to [http://weather.iskrzycki.usermd.net](http://weather.iskrzycki.usermd.net)
 
 ## Hosting
 
 Both frontend and backend are hosted on [MyDevil](https://www.mydevil.net/) which is Node.js hosting solution.
-Frontend app is automatically build & deployed by Github action on each code push.
+The frontend app is automatically built and deployed by Github action on each code push.
 
 
 ## TODO device
