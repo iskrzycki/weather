@@ -25,8 +25,7 @@ Used libraries:
 
 ## Device - heart of the system!
 
-Weather station is running on NodeMCU which is a esp-based microcontroller with .... (TODO provide params).
-Currently it's powered by usb charger. I will consider powering it by 18650 baterries or powerbank in the future.
+Weather station is running on [NodeMCU](https://en.wikipedia.org/wiki/NodeMCU) microcontroller. Currently it's powered by usb charger. I will consider powering it by 18650 baterries or powerbank in the future.
 
 ![Weather station device](device.jpg "Weather station device")
 
@@ -44,17 +43,6 @@ Open [http://weather.iskrzycki.usermd.net](http://weather.iskrzycki.usermd.net) 
 Both frontend and backend are hosted on [MyDevil](https://www.mydevil.net/) which is Node.js hosting solution.
 Frontend app is automatically build & deployed by Github action on each code push.
 
-## TODO client
-
-[ ] i18n support  
-[ ] Min/Max values for given periods  
-[ ] trends (arrows up/down)  
-[ ] dewPoint calculation
-
-## TODO backend
-
-[ ] auto deploy
-[ ] move secrets to .env
 
 ## TODO device
 
