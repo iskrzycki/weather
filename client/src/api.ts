@@ -1,6 +1,6 @@
 import { Measurement } from "./App";
 
-const ENDPOINT = "http://weather.iskrzycki.usermd.net/api";
+const ENDPOINT = "/api";
 
 export const getData = (numOfDays: number): Promise<Measurement[]> =>
   fetch(`${ENDPOINT}/getLastXDays/${numOfDays}`)
